@@ -18,19 +18,17 @@
 // Additional Comments: 
 // 
 //////////////////////////////////////////////////////////////////////////////////
-`default_nettype none
-
 module GRF(
-    input wire clk,
-    input wire reset,
-    input wire regWE,
-    input wire [31:0] pc,
-    input wire [4:0] regA1,
-    input wire [4:0] regA2,
-    input wire [4:0] regAW,
-    input wire [31:0] regWD,
-    output wire [31:0] regRD1,
-    output wire [31:0] regRD2
+    input clk,
+    input reset,
+    input regWE,
+    input [31:0] pc,
+    input [4:0] regA1,
+    input [4:0] regA2,
+    input [4:0] regA3,
+    input [31:0] regWD,
+    output [31:0] regRD1,
+    output [31:0] regRD2
     );
 
     reg [31:0] Register [0:31];
@@ -41,11 +39,11 @@ module GRF(
                 Register[i] <= 32'h0;
             end
         end else begin
-            if (regWE && regAW) begin
-                Register[regAW] <= regWD;
-                $display("%d@%h: $%d <= %h", $time, pc, regAW, regWD);
+            if (regWE && regA3) begin
+                Register[regA3] <= regWD;
+                $display("@%h: $%d <= %h", pc, regA3, regWD);
             end else begin
-                Register[regAW] <= Register[regAW];
+                Register[regA3] <= Register[regA3];
             end
         end
     end

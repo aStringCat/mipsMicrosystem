@@ -11,43 +11,51 @@
 // Tool versions: 
 // Description: 
 //
-// Dependencies:  
-// 
+// Dependencies: 
+//
 // Revision:  
 // Revision 0.01 - File Created
 // Additional Comments: 
 // 
 //////////////////////////////////////////////////////////////////////////////////
-`include "constants.v"
-`default_nettype none
- 
-module ALU( 
-    input wire [31:0] ALUInput1,
-    input wire [31:0] ALUInput2,
-    input wire [7:0] ALUOp,
-    output wire [31:0] ALUOut
-    ); 
+`define Add 8'd0
+`define Sub 8'd1
+`define Or 8'd2
+`define LogicalLeft 8'd3
+`define Equal 8'd4 
+
+module ALU(
+    input [31:0] Input1,
+    input [31:0] Input2,
+    input [7:0] ALUOp,
+    output [31:0] Output
+    );
 
     reg [31:0] ans;
 
     always @(*) begin
         case (ALUOp)
-            `aluAdd: begin
-                ans = ALUInput1 + ALUInput2;
+            `Add: begin
+                ans = Input1 + Input2;
             end
-            `aluSub: begin
-                ans = ALUInput1 - ALUInput2;
+            `Sub: begin
+                ans = Input1 - Input2;
             end
-            `aluOr: begin
-                ans = ALUInput1 | ALUInput2;
+            `Or: begin
+                ans = Input1 | Input2;
             end
-            `aluLogicalLeft: begin
-                ans = ALUInput1 << ALUInput2;
+            `LogicalLeft: begin
+                ans = Input1 << Input2;
             end
-            default: ;
+            `Equal: begin
+                ans = (Input1 == Input2) ? 32'd1 : 32'd0;
+            end
+            default: begin
+                ans = 32'd0;
+            end
         endcase
-    end 
+    end
 
-    assign ALUOut = ans;
+    assign Output = ans;
 
 endmodule
